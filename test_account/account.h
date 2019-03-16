@@ -27,32 +27,49 @@ namespace acc
 			AgreedOverdraft							= agreedOverdraft;
 		}
 
-		void									Deposit					(int64_t amount)						{ this->Balance += amount; }
-		void									Withdraw				(int64_t amount)						{
-			if(::acc::ACCOUNT_TYPE_CTA_CORRIENTE == this->Balance && amount > (this->Balance + this->AgreedOverdraft))
+		void									Deposit					(uint64_t amount)						{ 
+			if(amount > 0x7FFFFFFFFFFFFFFF) 
+				throw ::std::runtime_error("Invalid deposit amount: value overflow.");
+			const int64_t								resultingValue			= this->Balance + amount;
+			if(resultingValue < this->Balance || resultingValue < (int64_t)amount)
+				throw ::std::runtime_error("Invalid deposit amount: value overflow.");
+			this->Balance							= resultingValue; 
+		}
+
+		void									Withdraw				(uint64_t amount)						{
+			if(amount > 0x7FFFFFFFFFFFFFFF) 
+				throw ::std::runtime_error("Invalid withdraw amount: value overflow.");
+			const int64_t								resultingValue			= this->Balance - amount;
+			const bool									enoughMoney				= (int64_t)amount <= this->Balance + (::acc::ACCOUNT_TYPE_CTA_CORRIENTE == this->Type) ? this->AgreedOverdraft : 0;
+			if(false == enoughMoney)
 				throw ::std::runtime_error("No hay dinero suficiente.");
-			else if (amount > this->Balance)
-				throw ::std::runtime_error("No hay dinero suficiente.");
-			this->Balance					-= amount;
+			this->Balance							-= amount;
 		}
 	};
 #pragma pack(pop)
 
-	struct SAccount {
-		int64_t									AccountNumber			;
-		::std::string							Titular					;
-	};
-
 	class Bank {
-		::std::vector<::acc::SAccount>			Accounts;
+		::std::vector<uint64_t				>	AccountNumbers	;
+		::std::vector<::std::string			>	Holders			;
 		::std::vector<::acc::SAccountBalance>	Balances;
 
-		int32_t									CreateAccount			(ACCOUNT_TYPE type, int64_t nCuenta, const ::std::string& titular, long descAcordado = 0)					{
-			if(descAcordado && type != ::acc::ACCOUNT_TYPE_CTA_CORRIENTE)
+		int32_t									CreateAccount			(ACCOUNT_TYPE type, uint64_t nCuenta, const ::std::string& holder, long agreedOverdraft = 0)					{
+			if(agreedOverdraft && type != ::acc::ACCOUNT_TYPE_CTA_CORRIENTE)
 				throw ::std::runtime_error("El descubierto acordado debe ser igual a cero para cuentas que no sean de tipo CTA_CORRIENTE.");
-			Accounts.push_back({nCuenta, titular});
-			Balances.push_back(type);
-			Balances[Balances.size() - 1].AgreedOverdraft	= descAcordado;
+			const size_t								oldSize					= Balances.size();
+			try {
+				AccountNumbers	.push_back(nCuenta);
+				Holders			.push_back(holder);
+				Balances		.push_back(type);
+			}
+			catch (...) { // Out of memory?
+				AccountNumbers	.resize(oldSize);
+				Holders			.resize(oldSize);
+				return -1;
+			}
+			const size_t								index					= Balances.size() - 1;
+			Balances[index].AgreedOverdraft			= agreedOverdraft;
+			return (int32_t)index;
 		}
 	};
 }
