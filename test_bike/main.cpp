@@ -1,25 +1,5 @@
 #include "rentals.h"
 
-#include <iostream>
-#include <string>
-
-// returns -1 if the user entered an invalid numeric input
-static	int64_t								getNumericInput							()									{
-	// Get user input
-	::std::string									userChoice;
-	int64_t											selectedOption							= -1;
-	while(0 == userChoice.size()) {
-		::std::getline(::std::cin, userChoice);
-		if(userChoice.size() >= 4 && (userChoice.substr(0, 4) == "exit" || userChoice.substr(0, 4) == "back"))
-			return -2; // return exit code
-		// Convert the input string to a menuitem index.
-		selectedOption								= -1;
-		try { selectedOption = ::std::stoll(userChoice); }
-		catch(::std::invalid_argument) {}	// this try/catch bullshit is required because std::stoi() throws exceptions if the input can't be converted to a number.
-	}
-	return selectedOption;
-}
-
 static	int64_t								inputRental								(::bik::SRental & rental)			{
 	int												selection								= -1;
 	while(selection < 0) {
@@ -33,7 +13,7 @@ static	int64_t								inputRental								(::bik::SRental & rental)			{
 			, ::bik::g_Prices[2].Text
 			, "Back"
 			);
-		selection									= (int)::getNumericInput();
+		selection									= (int)::rec::getNumericInput();
 		char											output[512]								= {};
 		switch(selection) { 
 		case -2	: 
@@ -53,7 +33,7 @@ static	int64_t								inputRental								(::bik::SRental & rental)			{
 	int												bikes									= -1;
 	while(bikes < 0) {
 		printf("\n\nType bike count or \"exit\" (without quotes) to exit:\n");
-		bikes										= (int)::getNumericInput();
+		bikes										= (int)::rec::getNumericInput();
 		if(bikes == -2) 
 			return -2;
 		char											output[512]								= {};
@@ -69,7 +49,7 @@ static	int64_t								inputRental								(::bik::SRental & rental)			{
 	int												hours									= -1;
 	while(hours <= 0) {
 		printf("\n\nType rental time (in %ss) or \"exit\" (without quotes) to exit:\n", textTypeSelected);
-		hours										= (int)::getNumericInput();
+		hours										= (int)::rec::getNumericInput();
 		if(hours == -2)
 			return -2;
 		char											output[512]								= {};
@@ -98,7 +78,7 @@ static	int64_t								inputRentalOriginal						(::bik::SRental & rental)			{
 			, ::bik::g_Prices[2].Text
 			, "Back"
 			);
-		selection									= (int)::getNumericInput();
+		selection									= (int)::rec::getNumericInput();
 		char											output[512]								= {};
 		switch(selection) { 
 		case -2	: 
@@ -123,7 +103,7 @@ static	int64_t								inputRentalOriginal						(::bik::SRental & rental)			{
 	int32_t												hours									= -1;
 	while(hours < 0) {
 		printf("\n\nType rental time (in %ss) or \"exit\" (without quotes) to exit:\n", textTypeSelected);
-		hours										= (int)::getNumericInput();
+		hours										= (int)::rec::getNumericInput();
 		if(hours == -2)
 			return -2;
 		char											output[512]								= {};
@@ -159,7 +139,7 @@ struct SCart {
 			, "Discount by total rentals (original)."
 			, "Exit."
 			);
-		version										= (int)::getNumericInput();
+		version										= (int)::rec::getNumericInput();
 		switch(version) {
 		default: 
 			printf("\nEnter a valid option.");

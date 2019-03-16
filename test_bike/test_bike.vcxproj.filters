@@ -26,8 +26,5 @@
     <ClInclude Include="rentals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rentalib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

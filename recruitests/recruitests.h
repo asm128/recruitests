@@ -1,10 +1,10 @@
 #include <cstdint>
 #include <cstdio>
 
-#ifndef RENTALIB_H_20190314
-#define RENTALIB_H_20190314
+#ifndef RECRUITESTS_H_20190316
+#define RECRUITESTS_H_20190316
 
-namespace bikl	// what's found in this namespace could be moved to some .h as it's useful everywhere.
+namespace rec
 {
 // This macro simplifies throwing generic exceptions with custom messages.
 #define throw_if(condition, format, ...) do { 	\
@@ -53,6 +53,8 @@ namespace bikl	// what's found in this namespace could be moved to some .h as it
 
 		inline constexpr	const uint32_t&			size						()																	const	noexcept	{ return Count;			}
 	};
+
+	int64_t										getNumericInput				();
 }
 
-#endif // RENTALIB_H_20190314
+#endif // RECRUITESTS_H_20190316

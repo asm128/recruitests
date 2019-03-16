@@ -1,6 +1,6 @@
 #include "rentals.h"
 
-double									bik::rentalCalculatePrice					(::bikl::view_array<::bik::SRental> rentals, const ::bikl::view_array<const ::bik::SPrice>& priceList, ::std::vector<::bik::SRentalPrices>& individualPrices, bool enableDiscount) {
+double									bik::rentalCalculatePrice					(::rec::view_array<::bik::SRental> rentals, const ::rec::view_array<const ::bik::SPrice>& priceList, ::std::vector<::bik::SRentalPrices>& individualPrices, bool enableDiscount) {
 	double										totalPrice								= 0;
 	for(uint32_t iRental = 0, countRentals = (uint32_t)rentals.size(); iRental < countRentals; ++iRental) {
 		const ::bik::SRental						& rental								= rentals[iRental];
@@ -28,7 +28,7 @@ double									bik::rentalCalculatePrice					(::bikl::view_array<::bik::SRental>
 	return totalPrice;
 }
 
-double									bik::rentalCalculatePriceOriginal			(::bikl::view_array<::bik::SRental> rentals, const ::bikl::view_array<const ::bik::SPrice>& priceList, ::std::vector<::bik::SRentalPrices>& individualPrices, bool enableDiscount) {
+double									bik::rentalCalculatePriceOriginal			(::rec::view_array<::bik::SRental> rentals, const ::rec::view_array<const ::bik::SPrice>& priceList, ::std::vector<::bik::SRentalPrices>& individualPrices, bool enableDiscount) {
 	double										totalPrice								= 0;
 	for(uint32_t iRental = 0, countRentals = (uint32_t)rentals.size(); iRental < countRentals; ++iRental) {
 		const ::bik::SRental						& rental								= rentals[iRental];

@@ -1,4 +1,4 @@
-#include "rentalib.h"
+#include "recruitests.h"
 
 #include <vector>
 
@@ -34,8 +34,8 @@ namespace bik
 	};
 #pragma pack(pop)
 
-	double										rentalCalculatePrice				(::bikl::view_array<::bik::SRental> rentals, const ::bikl::view_array<const ::bik::SPrice>& priceList, ::std::vector<::bik::SRentalPrices>& individualPrices, bool enableDiscount);
-	double										rentalCalculatePriceOriginal		(::bikl::view_array<::bik::SRental> rentals, const ::bikl::view_array<const ::bik::SPrice>& priceList, ::std::vector<::bik::SRentalPrices>& individualPrices, bool enableDiscount);
+	double										rentalCalculatePrice				(::rec::view_array<::bik::SRental> rentals, const ::rec::view_array<const ::bik::SPrice>& priceList, ::std::vector<::bik::SRentalPrices>& individualPrices, bool enableDiscount);
+	double										rentalCalculatePriceOriginal		(::rec::view_array<::bik::SRental> rentals, const ::rec::view_array<const ::bik::SPrice>& priceList, ::std::vector<::bik::SRentalPrices>& individualPrices, bool enableDiscount);
 
 	static constexpr	const ::bik::SPrice		g_Prices[RENTAL_TYPE_COUNT]			= 
 		{ { RENTAL_TYPE_HOUR	,  5, "Hour"	}
